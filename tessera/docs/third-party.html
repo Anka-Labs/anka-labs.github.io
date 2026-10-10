@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Third-party notices – Tessera</title>
+<meta name="description" content="Tessera third-party notices.">
+<link rel="icon" href="../../img/ankalabs-mark.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<header class="site-header"><div class="wrap">
+  <a class="brand" href="../../"><img src="../../img/ankalabs-mark.svg" alt="">Anka Labs</a>
+  <nav class="nav"><a href='../../tessera/'>Tessera</a><a href='../../tessera/docs/' class=active>Documentation</a><a href='../../#contact'>Contact</a></nav>
+</div></header>
+<div class='wrap doc'><nav><div class='group'>Manual</div><a href='index.html'>Overview</a><div class='group'>Reference</div><a href='changelog.html'>Changelog</a><a href='third-party.html'>Third-party notices</a></nav><article><h1 id="third-party-notices">Third Party Notices</h1>
+<p>Tessera's own code (<code>Editor/</code>, <code>Runtime/</code> and <code>Native/step2glb</code>) is not covered by the licenses below. The converter in
+<code>Tools/win-x64/</code> ships with the following third-party components. Full license texts are in <code>Third Party Licenses/</code>.</p>
+<h2 id="open-cascade-technology-801">Open CASCADE Technology 8.0.1</h2>
+<ul>
+<li>Files: <code>Tools/win-x64/TK*.dll</code> (unmodified, dynamically linked by <code>step2glb.dll</code>)</li>
+<li>License: GNU Lesser General Public License v2.1 with the Open CASCADE Exception
+  (<code>Third Party Licenses/OpenCASCADE-LICENSE_LGPL_21.txt</code>, <code>Third Party Licenses/OpenCASCADE-OCCT_LGPL_EXCEPTION.txt</code>)</li>
+<li>Source code: https://github.com/Open-Cascade-SAS/OCCT/tree/V8_0_1, built with the vcpkg port <code>opencascade</code>
+  (features: <code>rapidjson</code>)</li>
+</ul>
+<p>You may replace the <code>TK*.dll</code> files with your own build of Open CASCADE 8.0.x (same toolkits, x64, MSVC runtime
+<code>/MD</code>); <code>step2glb.dll</code> loads them from its own folder. Restart Unity after replacing them.</p>
+<p>With <em>Include in Windows builds</em> enabled, the same files are copied into Windows player builds
+(<code>&lt;Game&gt;_Data/Plugins/x86_64/</code>), together with this notice and the license texts (<code>step2glb-licenses/</code>).</p>
+<h2 id="rapidjson">RapidJSON</h2>
+<ul>
+<li>Used by: Open CASCADE's glTF writer (header-only, compiled into <code>TKDEGLTF.dll</code>)</li>
+<li>License: MIT (<code>Third Party Licenses/RapidJSON-LICENSE.txt</code>)</li>
+<li>Source code: https://github.com/Tencent/rapidjson</li>
+</ul>
+<h2 id="microsoft-visual-c-runtime">Microsoft Visual C++ Runtime</h2>
+<ul>
+<li>Files: <code>Tools/win-x64/msvcp140*.dll</code>, <code>vcruntime140*.dll</code>, <code>concrt140.dll</code> and related runtime libraries</li>
+<li>Redistributed app-local as "Distributable Code" under the Microsoft Visual Studio license terms.</li>
+</ul></article></div>
+<footer class="site-footer"><div class="wrap">
+  <span>© 2026 Anka Labs · Andreas Johansson</span>
+  <span><a href="mailto:johansson.andreas.88@gmail.com">johansson.andreas.88@gmail.com</a></span>
+</div></footer>
+</body>
+</html>

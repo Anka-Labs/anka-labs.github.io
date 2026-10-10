@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Changelog – Tessera</title>
+<meta name="description" content="Tessera changelog.">
+<link rel="icon" href="../../img/ankalabs-mark.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<header class="site-header"><div class="wrap">
+  <a class="brand" href="../../"><img src="../../img/ankalabs-mark.svg" alt="">Anka Labs</a>
+  <nav class="nav"><a href='../../tessera/'>Tessera</a><a href='../../tessera/docs/' class=active>Documentation</a><a href='../../#contact'>Contact</a></nav>
+</div></header>
+<div class='wrap doc'><nav><div class='group'>Manual</div><a href='index.html'>Overview</a><div class='group'>Reference</div><a href='changelog.html'>Changelog</a><a href='third-party.html'>Third-party notices</a></nav><article><h1 id="changelog">Changelog</h1>
+<h2 id="131-2026-10-10">[1.3.1] - 2026-10-10</h2>
+<ul>
+<li>First Asset Store release. The Asset Store version installs into <code>Assets/Tessera/</code> and includes a demo scene
+  (<code>Samples/Tessera Demo.unity</code>) with the sample assembly imported by drag and drop and loaded with <code>CadLoader</code>.</li>
+<li>Requires Unity 6.2 (6000.2) or later.</li>
+<li><code>CadLoader</code> and <code>CadImportApi</code> without a log callback only write warnings and errors to the console.</li>
+</ul>
+<h2 id="130-2026-10-10">[1.3.0] - 2026-10-10</h2>
+<ul>
+<li><strong>Renamed to Tessera.</strong> Package <code>vonanka.tessera</code>, menu <strong>Tools ▸ Tessera CAD Importer</strong>, <strong>Project Settings ▸ Tessera</strong>.
+  <strong>Breaking:</strong> namespaces <code>Tessera.CadImport</code> and <code>Tessera.CadImport.Editor</code>, assemblies with the same names, and
+  types renamed from <code>Step*</code> to <code>Cad*</code> (<code>CadImportApi</code>, <code>CadImportSettings</code>, <code>CadImportException</code>, <code>CadLoader</code>,
+  <code>CadLoadOptions</code>, <code>CadModel</code>, <code>CadAssetImporter</code>). Files already imported by drag and drop keep their settings.
+  Default folders are now <code>Assets/CAD Imports</code> and <code>Assets/CAD Imports/Materials</code>.</li>
+<li>CAD color names that are only a number (Siemens NX palette numbers such as "16841") are ignored; those materials
+  are named and shared by color instead ("Color 33FFCC").</li>
+<li>The warning for files without colors no longer claims that AP203 cannot store colors.</li>
+<li>Verified with STEP AP203, AP214 and AP242 files from Creo, SolidWorks, Autodesk and Siemens NX (NIST D2MI models).</li>
+<li>The sample assembly is now <code>testmachine.step</code> / <code>testmachine.igs</code>.</li>
+<li>The converter is now a native library (<code>step2glb.dll</code>) that the editor loads in-process, instead of a separate
+  executable. The package no longer contains any <code>.exe</code> files. Imports, settings and results are unchanged.</li>
+<li>Cancelling now also stops Open CASCADE while it is reading or meshing a large file, not only between steps.</li>
+<li><em>Path override</em> in the window now expects a <code>step2glb.dll</code>.</li>
+<li>Updating the converter DLLs requires restarting Unity, since a loaded library cannot be replaced.</li>
+<li><strong>Runtime import on Windows:</strong> <code>CadLoader.LoadAsync</code> loads STEP/IGES files in play mode and in Windows x64
+  players. Enable <em>Project Settings ▸ Tessera ▸ Include in Windows builds</em> to ship the converter with a build.
+  Destroying the returned <code>CadModel</code> frees its meshes and materials.</li>
+<li><code>CadLoadOptions.materialTemplate</code> / <code>transparentMaterialTemplate</code>: new materials can be copies of your own
+  materials instead of the pipeline's Lit shader. This also works for editor imports through the scripting API.</li>
+<li>The package now has a runtime assembly. <code>CadImportException</code>, <code>MeshQualityPreset</code>, <code>UpAxis</code> and
+  <code>RenderPipelineTarget</code> are in the runtime namespace <code>Tessera.CadImport</code>.</li>
+</ul>
+<h2 id="120-2026-10-04">[1.2.0] - 2026-10-04</h2>
+<ul>
+<li>Materials are named after the CAD appearance when the file has one (e.g. Autodesk's "Steel - Satin"), otherwise
+  after the color ("Color A0A0A0"). Parts with the same appearance share one material.</li>
+<li>Material library (<code>Assets/StepImports/Materials</code> by default): materials are saved there once and reused by every
+  model, so they only need to be set up once. Drag-and-drop imports use library materials when they exist;
+  <strong>Extract Materials</strong> in the importer Inspector copies the embedded ones into the library.</li>
+<li>Appearance names set the look: metals (steel, brass, aluminium …) become metallic, and matte/satin/glossy set
+  the smoothness. English, German and Swedish terms are recognized.</li>
+<li>Fix: plain CAD colors were rendered as fully metallic, because Open CASCADE omits the metallic factor and glTF
+  then defaults to 1.</li>
+<li>Repeated parts under the same parent get unique names (<code>PART</code>, <code>PART (1)</code>, …), which removes Unity's
+  "Identifier uniqueness violation" warning and keeps references to individual instances stable on re-import.</li>
+<li>A warning is shown when a file contains no colors, e.g. STEP AP203 exports, with a hint to re-export as AP214/AP242.</li>
+</ul>
+<h2 id="110-2026-10-04">[1.1.0] - 2026-10-04</h2>
+<ul>
+<li>Drag and drop: <code>.step</code>, <code>.stp</code>, <code>.iges</code> and <code>.igs</code> files placed in the project are imported automatically as models
+  (meshes and materials as sub-assets), with import settings in the Inspector and re-import when the file changes.</li>
+<li>IGES support in the converter, the window and the scripting API.</li>
+<li>The converter now links Open CASCADE dynamically (<code>TK*.dll</code> next to <code>step2glb.exe</code>) so the LGPL library can be
+  replaced, and ships the MSVC runtime app-local. Full license texts are included in <code>Third Party Licenses/</code>.</li>
+<li>The converter DLLs are excluded from the editor and all build targets.</li>
+</ul>
+<h2 id="100-2026-10-04">[1.0.0] - 2026-10-04</h2>
+<ul>
+<li>First release: STEP import with assembly hierarchy, CAD colors, tessellation presets, vertex welding, UVs, tangents,
+  Standard/URP/HDRP materials, prefab or combined mesh output and a scripting API (<code>StepImporterApi</code>).</li>
+<li>Converter <code>step2glb</code> for Windows x64, built with Open CASCADE 8.0.1.</li>
+</ul></article></div>
+<footer class="site-footer"><div class="wrap">
+  <span>© 2026 Anka Labs · Andreas Johansson</span>
+  <span><a href="mailto:johansson.andreas.88@gmail.com">johansson.andreas.88@gmail.com</a></span>
+</div></footer>
+</body>
+</html>

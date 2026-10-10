@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tessera – STEP &amp; IGES CAD Importer for Unity</title>
+<meta name="description" content="Import STEP and IGES CAD files into Unity with assembly hierarchy, CAD colors and URP/HDRP/Built-in materials.">
+<link rel="icon" href="../img/ankalabs-mark.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="site-header"><div class="wrap">
+  <a class="brand" href="../"><img src="../img/ankalabs-mark.svg" alt="">Anka Labs</a>
+  <nav class="nav"><a href='../tessera/' class=active>Tessera</a><a href='../tessera/docs/'>Documentation</a><a href='../#contact'>Contact</a></nav>
+</div></header>
+
+<div class="hero"><div class="wrap">
+  <div>
+    <div class="eyebrow">Tessera 1.3.1 · for Unity 6.2+</div>
+    <h1>STEP &amp; IGES, straight into Unity.</h1>
+    <p class="lead">Drop a CAD file into the Project window and get a Unity model with the assembly hierarchy,
+      CAD colors and pipeline-native materials. Nothing else to install.</p>
+    <div class="buttons"><span class='button primary disabled'>Coming soon to the Asset Store</span><a class="button" href="docs/">Documentation</a></div>
+  </div>
+  <div class="art"><img src="../img/tessera-mark.svg" alt="Tessera"></div>
+</div></div>
+
+<section><div class="wrap">
+  <h2>What it does</h2>
+  <p class="intro">Tessera turns exact CAD geometry into meshes you control, and keeps everything that makes the model
+    useful: structure, names and appearance.</p>
+  <div class="grid"><div class='card'><h3>Keeps your CAD structure</h3><p>The full assembly hierarchy with part and instance names. Repeated parts share one mesh, and mirrored instances are handled correctly.</p></div><div class='card'><h3>Materials for every pipeline</h3><p>Materials from CAD colors and appearances for Built-in, URP and HDRP. Names like “Steel – Satin” become material names, and metals become metallic.</p></div><div class='card'><h3>A shared material library</h3><p>Set up “Steel” once with your own textures and settings, and every imported model with that material uses it.</p></div><div class='card'><h3>Mesh quality you control</h3><p>Presets from Draft to Ultra, or exact chordal error and angular tolerance. Welding closes seams but keeps sharp CAD edges.</p></div><div class='card'><h3>Three ways in</h3><p>Drag and drop like an FBX, a window for files outside the project, and a scripting API for batch conversion and CI.</p></div><div class='card'><h3>Runtime import on Windows</h3><p>CadLoader loads STEP and IGES files while your app runs, in play mode and in Windows x64 builds.</p></div></div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>How it works</h2>
+  <p class="intro">A bundled converter built on Open CASCADE reads and tessellates the CAD file in the background, so
+    the editor stays responsive even on large assemblies.</p>
+  <div class="flow">
+    <div class="card step"><h3>CAD file</h3><p>STEP AP203, AP214, AP242 or IGES, from any CAD tool.</p></div>
+    <div class="arrow">→</div>
+    <div class="card step"><h3>Tessellation</h3><p>Open CASCADE reads the B-rep geometry, repairs broken faces and builds the meshes.</p></div>
+    <div class="arrow">→</div>
+    <div class="card step"><h3>Unity model</h3><p>Hierarchy, meshes with normals, tangents and UVs, and materials for your pipeline.</p></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Compatibility</h2>
+  <table>
+    <tr><th>Unity</th><td>Unity 6.2 (6000.2) or later</td></tr>
+    <tr><th>Editor platform</th><td>Windows x64</td></tr>
+    <tr><th>Runtime import</th><td>Windows x64 players (Mono)</td></tr>
+    <tr><th>Render pipelines</th><td>Built-in, URP, HDRP</td></tr>
+    <tr><th>Formats</th><td>STEP AP203, AP214, AP242 (.step, .stp, .p21) and IGES (.iges, .igs)</td></tr>
+    <tr><th>Not imported</th><td>PMI and annotations, textures, physical material properties</td></tr>
+  </table>
+</div></section>
+
+<footer class="site-footer"><div class="wrap">
+  <span>© 2026 Anka Labs · Andreas Johansson</span>
+  <span><a href="mailto:johansson.andreas.88@gmail.com">johansson.andreas.88@gmail.com</a></span>
+</div></footer>
+</body>
+</html>

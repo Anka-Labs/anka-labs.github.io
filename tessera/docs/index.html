@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Documentation – Tessera</title>
+<meta name="description" content="Tessera documentation.">
+<link rel="icon" href="../../img/ankalabs-mark.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<header class="site-header"><div class="wrap">
+  <a class="brand" href="../../"><img src="../../img/ankalabs-mark.svg" alt="">Anka Labs</a>
+  <nav class="nav"><a href='../../tessera/'>Tessera</a><a href='../../tessera/docs/' class=active>Documentation</a><a href='../../#contact'>Contact</a></nav>
+</div></header>
+<div class='wrap doc'><nav><div class='group'>Manual</div><a href='index.html'>Overview</a><a href='#installation'>Installation</a><a href='#getting-started'>Getting started</a><a href='#settings'>Settings</a><a href='#materials'>Materials</a><a href='#scripting-api'>Scripting API</a><a href='#runtime-import-windows'>Runtime import (Windows)</a><a href='#troubleshooting'>Troubleshooting</a><a href='#limitations'>Limitations</a><div class='group'>Reference</div><a href='changelog.html'>Changelog</a><a href='third-party.html'>Third-party notices</a></nav><article><h1 id="tessera-step-iges-cad-importer">Tessera – STEP &amp; IGES CAD Importer</h1>
+<p>Imports CAD files in STEP (<code>.step</code> / <code>.stp</code>) and IGES (<code>.iges</code> / <code>.igs</code>) format as Unity models, with the assembly hierarchy, CAD colors and materials for the Built-in Render Pipeline, URP or HDRP.</p>
+<p>Tessellation is done by a bundled converter built on Open CASCADE. <strong>No other software or packages need to be installed.</strong></p>
+<p>Requires Unity 6.2 (6000.2) or later. Works with the Built-in Render Pipeline, URP and HDRP. The converter is available for the Windows (x64) editor and, for runtime import, Windows x64 players.</p>
+<h2 id="installation">Installation</h2>
+<p><strong>Asset Store:</strong> open <strong>Window ▸ Package Manager ▸ My Assets</strong>, select Tessera and click <strong>Import</strong>. Everything is placed in <code>Assets/Tessera/</code>; the demo scene is <code>Assets/Tessera/Samples/Tessera Demo.unity</code>.</p>
+<p><strong>Package Manager (git):</strong> open <strong>Window ▸ Package Manager ▸ + ▸ Install package from git URL…</strong> and paste:</p>
+<pre><code>https://github.com/vonAnka/step_importer.git?path=/Packages/vonanka.tessera#v1.3.1
+</code></pre>
+<p>Replace <code>#v1.3.1</code> with the version you want. Without it, you follow the latest commit on the default branch.</p>
+<p><strong>Local folder:</strong> <strong>+ ▸ Install package from disk…</strong> and select <code>package.json</code> in this folder.</p>
+<p><strong>.unitypackage:</strong> import the file through <strong>Assets ▸ Import Package ▸ Custom Package…</strong>.</p>
+<h2 id="getting-started">Getting started</h2>
+<p>There are two ways to import:</p>
+<p><strong>Drag and drop:</strong> drag a <code>.step</code>, <code>.stp</code>, <code>.iges</code> or <code>.igs</code> file into the Project window. It is imported as a model, like an FBX file, and can be dragged straight into the scene.</p>
+<ul>
+<li>Select the file to change the import settings in the Inspector, then click <strong>Apply</strong>.</li>
+<li>When you save a new version of the file from your CAD tool, it is re-imported automatically.</li>
+<li>Meshes and materials are stored inside the file and are read-only, as with FBX. To edit materials, use <strong>Extract Materials</strong> (see <em>Materials</em>) or the window.</li>
+</ul>
+<p><strong>The window</strong> (<strong>Tools ▸ Tessera CAD Importer</strong>) is for files outside the project and when you want editable output:</p>
+<ol>
+<li>Click <strong>Check converter</strong>. The log should show <code>step2glb 2.0 (Open CASCADE …)</code>.</li>
+<li>Select a CAD file and click <strong>Convert</strong>. The result is a prefab with a separate mesh asset in <code>Assets/CAD Imports/</code>.</li>
+</ol>
+<p>IGES files have no assembly structure, so they become a single part with colors.</p>
+<p>Want something to try? Open the demo scene in <code>Assets/Tessera/Samples/</code> (Asset Store version), or import the <strong>Test assembly</strong> sample from the <em>Samples</em> tab in the Package Manager (git version). The demo shows the sample assembly imported by drag and drop, and the same file loaded with <code>CadLoader</code> when you press Play.</p>
+<h2 id="settings">Settings</h2>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CAD up axis</td>
+<td>The axis that points up in the CAD model (Z or Y). The model is rotated to Unity's Y-up.</td>
+</tr>
+<tr>
+<td>Mesh quality</td>
+<td>Draft / Medium / High / Ultra, or Custom with your own values.</td>
+</tr>
+<tr>
+<td>Chordal error (mm)</td>
+<td>Maximum distance between the exact CAD surface and the triangles. Lower values give more triangles.</td>
+</tr>
+<tr>
+<td>Angular tolerance (°)</td>
+<td>Maximum angle between the normals of adjacent triangles. Controls how round small radii become.</td>
+</tr>
+<tr>
+<td>Weld vertices</td>
+<td>Closes the seams between CAD faces. Sharp edges are kept via <em>Max normal angle</em>.</td>
+</tr>
+<tr>
+<td>Generate UVs</td>
+<td>Box projection in metres (<em>UV tile size</em>), suitable for tiling textures.</td>
+</tr>
+<tr>
+<td>Lightmap UVs</td>
+<td>Generates UV2. Slow on large models.</td>
+</tr>
+<tr>
+<td>Use CAD colors</td>
+<td>Creates materials from the colors and appearances in the CAD file. When off, everything gets the same gray material.</td>
+</tr>
+<tr>
+<td>Render pipeline</td>
+<td><em>Auto</em> picks Standard, URP Lit or HDRP Lit based on the project's pipeline.</td>
+</tr>
+<tr>
+<td>Material library</td>
+<td>Shared folder for materials, <code>Assets/CAD Imports/Materials</code> by default. See <em>Materials</em> below.</td>
+</tr>
+<tr>
+<td>Format <em>(window)</em></td>
+<td><strong>Prefab</strong> keeps the hierarchy. <strong>Combined mesh</strong> bakes everything into one <code>.asset</code>.</td>
+</tr>
+<tr>
+<td>Triangle warning <em>(window)</em></td>
+<td>Asks before building models with more triangles than this.</td>
+</tr>
+</tbody>
+</table>
+<p>Prefab mode creates <code>&lt;name&gt;.prefab</code> and <code>&lt;name&gt;_Meshes.asset</code>. Materials are stored in the material library.</p>
+<h2 id="materials">Materials</h2>
+<p><strong>Names:</strong> materials are named after the appearance in the CAD file when there is one, for example <code>Steel - Satin</code> or <code>Plastic - Matte (White)</code> from Autodesk Inventor/Fusion. Otherwise they are named after the color, for example <code>Color A0A0A0</code>. All parts with the same appearance share one material.</p>
+<p><strong>The material library</strong> is a folder shared by all models:</p>
+<ul>
+<li>The window saves new materials there and reuses the ones that already exist. Set up <code>Steel - Satin.mat</code> once, with textures, metallic and so on, and every model with that appearance uses it, including future imports.</li>
+<li>Drag-and-drop imports use library materials that already exist. Others are embedded in the CAD file and are read-only. Click <strong>Extract Materials</strong> in the Inspector to move them into the library, where they become editable.</li>
+</ul>
+<p><strong>Appearance:</strong> some words in the material name set up the material. Metals (steel, stainless, brass, aluminium, chrome, copper …) become metallic, and matte/satin/glossy set the smoothness. English, German and Swedish terms are recognized.</p>
+<p>Which names are available depends on the CAD tool. Autodesk tools export appearance names, while SolidWorks, for example, exports only colors. STEP AP203 contains neither colors nor names.</p>
+<h2 id="scripting-api">Scripting API</h2>
+<p>Imports can be run from your own editor scripts, for example in batch mode or CI:</p>
+<pre><code class="language-csharp">using Tessera.CadImport.Editor;
+
+var settings = new CadImportSettings
+{
+    sourcePath = @&quot;C:\CAD\machine.step&quot;,
+    outputFolder = &quot;Assets/CAD&quot;,
+    quality = MeshQualityPreset.High,
+    instantiateInScene = false,
+};
+settings.ApplyPreset();
+
+ImportResult result = await CadImportApi.ImportAsync(settings);
+Debug.Log($&quot;{result.AssetPath}: {result.TriangleCount} triangles&quot;);
+</code></pre>
+<p>Errors are thrown as <code>CadImportException</code>. Cancelling through a <code>CancellationToken</code> throws <code>OperationCanceledException</code>.</p>
+<p><code>CadImportSettings</code>, <code>CadImportApi</code> and <code>ImportResult</code> are in the <code>Tessera.CadImport.Editor</code> namespace. The shared types <code>CadImportException</code>, <code>MeshQualityPreset</code>, <code>UpAxis</code> and <code>RenderPipelineTarget</code> are in <code>Tessera.CadImport</code>.</p>
+<h2 id="runtime-import-windows">Runtime import (Windows)</h2>
+<p><code>CadLoader</code> loads CAD files while the game runs: in the editor's play mode, or in a Windows x64 player.</p>
+<pre><code class="language-csharp">using Tessera.CadImport;
+
+public class CadViewer : MonoBehaviour
+{
+    public Material template; // e.g. a URP Lit material; new materials are copies with the CAD color
+
+    async void Start()
+    {
+        var options = new CadLoadOptions { quality = MeshQualityPreset.Medium, materialTemplate = template };
+        CadModel model = await CadLoader.LoadAsync(@&quot;C:\CAD\machine.step&quot;, options,
+            onProgress: (p, status) =&gt; Debug.Log($&quot;{p:P0} {status}&quot;));
+        Debug.Log($&quot;{model.TriangleCount} triangles&quot;);
+        // Destroy(model.gameObject) also frees the model's meshes and materials.
+    }
+}
+</code></pre>
+<ul>
+<li><strong>Builds:</strong> enable <strong>Project Settings ▸ Tessera ▸ Include in Windows builds</strong>. The converter (<code>step2glb.dll</code> and Open CASCADE, about 40 MB) and its license texts are then copied into <code>&lt;Game&gt;_Data/Plugins/x86_64/</code> of Windows x64 builds. Other builds are unaffected.</li>
+<li><strong>Materials:</strong> a build only contains shaders that something in it uses. Assign <code>materialTemplate</code> (and optionally <code>transparentMaterialTemplate</code>) so that the shader is included. Without a template, the pipeline's Lit shader must be in the build anyway, or listed under <strong>Graphics ▸ Always Included Shaders</strong>.</li>
+<li><strong>Threads:</strong> call <code>LoadAsync</code> from the main thread. Open CASCADE and mesh processing run in the background, and GameObjects are created over several frames. Conversions run one at a time.</li>
+<li><strong>Licenses:</strong> Open CASCADE is licensed under the LGPL. A game that ships the converter must include the notices that are copied next to it (<code>step2glb-licenses/</code>) and must not prevent users from replacing the DLLs.</li>
+<li><code>CadLoader.IsSupported</code> is false on other platforms. Lightmap UVs are not generated at runtime.</li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Cause / fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>The step2glb converter library was not found</em></td>
+<td>There is no converter for this platform (macOS/Linux), or the <code>Tools/</code> folder is missing from the installation.</td>
+</tr>
+<tr>
+<td><em>Could not load the converter library</em></td>
+<td>A DLL next to <code>step2glb.dll</code> in <code>Tools/win-x64/</code> is missing or damaged. Reinstall the package.</td>
+</tr>
+<tr>
+<td><em>The CAD file could not be read</em></td>
+<td>The file is not valid STEP (ISO-10303-21) or IGES. Try exporting it again from the CAD tool.</td>
+</tr>
+<tr>
+<td>Warning <em>could not be tessellated</em></td>
+<td>A part has broken geometry. It is kept as an empty node; the rest of the model is imported.</td>
+</tr>
+<tr>
+<td>All parts are gray</td>
+<td>The file has no colors. STEP AP203 cannot store colors: export as AP214 or AP242 instead (in Creo: <code>step_export_format</code>).</td>
+</tr>
+<tr>
+<td>The model lies on its side</td>
+<td>The model was designed with a different up axis. Switch <em>CAD up axis</em> between Z and Y; it varies between CAD tools and models.</td>
+</tr>
+<tr>
+<td>The model is 1000 times too large or small</td>
+<td>The CAD file declares the wrong unit. Scale it in Unity, or export again with the correct unit.</td>
+</tr>
+<tr>
+<td>HDRP materials look wrong</td>
+<td>Select the materials once in the Inspector so that HDRP updates them.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="limitations">Limitations</h2>
+<ul>
+<li>Textures and PMI/annotations from STEP are not imported, only geometry, structure and color.</li>
+<li>Colors assigned at instance level in deeply nested assemblies may be lost.</li>
+<li>The converter is currently available for Windows x64 only.</li>
+</ul>
+<p>License information for Open CASCADE, RapidJSON and the Microsoft Visual C++ runtime is in <a href="third-party.html">Third Party Notices.md</a>.</p></article></div>
+<footer class="site-footer"><div class="wrap">
+  <span>© 2026 Anka Labs · Andreas Johansson</span>
+  <span><a href="mailto:johansson.andreas.88@gmail.com">johansson.andreas.88@gmail.com</a></span>
+</div></footer>
+</body>
+</html>
